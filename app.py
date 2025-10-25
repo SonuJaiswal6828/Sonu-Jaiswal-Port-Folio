@@ -8,8 +8,8 @@ app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')  # Gmail address
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')  # App password
+app.config['MAIL_USERNAME'] = os.environ.get('jsonu77768@gmail.com')  # Gmail address
+app.config['MAIL_PASSWORD'] = os.environ.get('fgxw vnvz dbds plxe')  # App password
 app.config['MAIL_DEFAULT_SENDER'] = (os.environ.get('MAIL_SENDER_NAME', 'Portfolio Contact'),
                                      os.environ.get('MAIL_USERNAME'))
 
