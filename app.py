@@ -1,15 +1,17 @@
 from flask import Flask, render_template, request
 from flask_mail import Mail, Message
+import os
 
 app = Flask(__name__)
 
-# --- Email configuration ---
+# --- Email configuration using environment variables ---
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'jsonu77768@gmail.com'
-app.config['MAIL_PASSWORD'] = 'fgxw vnvz dbds plxe'  # Gmail app password
-app.config['MAIL_DEFAULT_SENDER'] = ('Portfolio Contact', 'jsonu77768@gmail.com')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')  # Gmail address
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')  # App password
+app.config['MAIL_DEFAULT_SENDER'] = (os.environ.get('MAIL_SENDER_NAME', 'Portfolio Contact'),
+                                     os.environ.get('MAIL_USERNAME'))
 
 mail = Mail(app)
 
@@ -19,24 +21,25 @@ def home():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    name = request.form['name']
-    email = request.form['email']
-    subject = request.form['subject']
-    message_body = request.form['message']
+    name = request.form.get('name')
+    email = request.form.get('email')
+    subject = request.form.get('subject')
+    message_body = request.form.get('message')
 
-    msg = Message(subject=f"New Contact: {subject}", recipients=['jsonu77768@gmail.com'])
+    msg = Message(subject=f"New Contact: {subject}", recipients=[app.config['MAIL_USERNAME']])
     msg.body = f"""
-    You have a new message from your portfolio website:
+You have a new message from your portfolio website:
 
-    Name: {name}
-    Email: {email}
-    Subject: {subject}
-    Message:
-    {message_body}
-    """
+Name: {name}
+Email: {email}
+Subject: {subject}
+Message:
+{message_body}
+"""
+    try:
+        mail.send(msg)
+        return render_template('thankyou.html', name=name)
+    except Exception as e:
+        return f"Error sending email: {str(e)}"
 
-    mail.send(msg)
-    return render_template('thankyou.html', name=name)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+# No app.run() needed for Vercel serverless
