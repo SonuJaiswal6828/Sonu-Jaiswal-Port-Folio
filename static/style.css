@@ -1,0 +1,59 @@
+ .main-container {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .profile-sidebar {
+            width: 350px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: rgba(30, 30, 47, 0.9);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+        }
+        
+        .content-area {
+            margin-left: 350px;
+            width: calc(100% - 350px);
+            padding: 2rem;
+        }
+        
+        /* Animation for hero section */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .profile-sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 1rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .content-area {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+        }
